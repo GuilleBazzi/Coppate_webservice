@@ -33,6 +33,57 @@ class Evento
             return false;
         }
     }
+
+    /**
+     * Obtiene los campos de una evento con un identificador
+     * determinado
+     *
+     * @param $id_evento Identificador del evento
+     * @return mixed
+     */
+    public static function getById($id_evento)
+    {
+        // Consulta de el evento
+        $consulta = "SELECT * FROM evento
+                             WHERE id_evento = ?";
+
+        try {
+            // Preparar sentencia
+            $comando = Database::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($id_evento));
+            // Capturar primera fila del resultado
+            $row = $comando->fetch(PDO::FETCH_ASSOC);
+            return $row;
+
+        } catch (PDOException $e) {
+            // Aquí puedes clasificar el error dependiendo de la excepción
+            // para presentarlo en la respuesta Json
+            return -1;
+        }
+    }
+
+    public static function getByIdOwner($id_owner)
+    {
+        // Consulta de el evento
+        $consulta = "SELECT * FROM evento
+                             WHERE id_owner = ?";
+
+        try {
+            // Preparar sentencia
+            $comando = Database::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($id_owner));
+            // Capturar primera fila del resultado
+            $row = $comando->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+
+        } catch (PDOException $e) {
+            // Aquí puedes clasificar el error dependiendo de la excepción
+            // para presentarlo en la respuesta Json
+            return -1;
+        }
+    }	
 	
     /**
      * Actualiza un registro de la bases de datos basado
