@@ -1,34 +1,26 @@
 <?php
 /**
- * Insertar una nueva evento en la base de datos
+ * Insertar un nuevo usuario en la base de datos
  */
 
-require 'Evento.php';
+require 'Usuario.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
     // Decodificando formato Json
     $body = json_decode(file_get_contents("php://input"), true);
 	
-	
-    // Insertar evento
-    $retorno = Evento::insert(
+		
+    // Insertar usuario
+    $retorno = Usuario::insert(
+        $body['id_usuario'],
         $body['nombre'],
-        $body['id_owner'],
-        $body['edad_min'],
-        $body['edad_max'],
-        $body['cupo_min'],
-        $body['cupo_max'],
-        $body['costo'],
-        $body['fecha'],
-        $body['foto'],
-        $body['ubicacion'],
-        $body['latitud'],
-        $body['longitud'],
-        $body['id_categoria'],
-        $body['desc_evento'],
+        $body['apellido'],
+        $body['email'],
+        $body['fecha_nacimiento'],
         $body['id_sexo'],
-        $body['estado']);
+        $body['alias'],
+        $body['foto']);
 
     if ($retorno) {
 		// Código de éxito
@@ -46,4 +38,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         );
     }
 }
-// print "Se ejecutó todo el código PHP";

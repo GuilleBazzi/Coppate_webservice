@@ -6,21 +6,20 @@
  */
 require 'Database.php';
 
-class Evento
+class Usuario
 {
     function __construct()
     {
     }
 
     /**
-     * Retorna en la fila especificada de la tabla 'evento'
+     * Retorna todos los registros de la tabla 'usuario'
      *
-     * @param $id_evento Identificador del registro
      * @return array Datos del registro
      */
     public static function getAll()
     {
-        $consulta = "SELECT * FROM evento";
+        $consulta = "SELECT * FROM usuario";
         try {
             // Preparar sentencia
             $comando = Database::getInstance()->getDb()->prepare($consulta);
@@ -35,23 +34,23 @@ class Evento
     }
 
     /**
-     * Obtiene los campos de una evento con un identificador
+     * Obtiene los campos de una usuario con un identificador
      * determinado
      *
-     * @param $id_evento Identificador del evento
+     * @param $id_usuario Identificador del usuario
      * @return mixed
      */
-    public static function getById($id_evento)
+    public static function getById($id_usuario)
     {
-        // Consulta de el evento
-        $consulta = "SELECT * FROM evento
-                             WHERE id_evento = ?";
+        // Consulta de el usuario
+        $consulta = "SELECT * FROM usuario
+                             WHERE id_usuario = ?";
 
         try {
             // Preparar sentencia
             $comando = Database::getInstance()->getDb()->prepare($consulta);
             // Ejecutar sentencia preparada
-            $comando->execute(array($id_evento));
+            $comando->execute(array($id_usuario));
             // Capturar primera fila del resultado
             $row = $comando->fetch(PDO::FETCH_ASSOC);
             return $row;
@@ -62,28 +61,39 @@ class Evento
             return -1;
         }
     }
-
-    public static function getByIdOwner($id_owner)
+	
+/*     public static function logUser(
+        $id_usuario,
+        $nombre,
+        $apellido,
+        $email,
+        $fecha_nacimiento,
+        $id_sexo,
+		$alias,
+		$foto
+    )
     {
-        // Consulta de el evento
-        $consulta = "SELECT * FROM evento
-                             WHERE id_owner = ?";
+        // Consulta de el usuario, si no existe lo crea en la base, si existe le hace un update.
+        $consulta = "SELECT * FROM usuario
+                             WHERE id_usuario = ?";
 
         try {
             // Preparar sentencia
             $comando = Database::getInstance()->getDb()->prepare($consulta);
             // Ejecutar sentencia preparada
-            $comando->execute(array($id_owner));
+            $comando->execute(array($id_usuario));
             // Capturar primera fila del resultado
-            $row = $comando->fetchAll(PDO::FETCH_ASSOC);
-            return $row;
+            $row = $comando->fetch(PDO::FETCH_ASSOC);
+            
+			return $row;
 
         } catch (PDOException $e) {
             // Aquí puedes clasificar el error dependiendo de la excepción
             // para presentarlo en la respuesta Json
             return -1;
         }
-    }	
+    } */
+
 	
     /**
      * Actualiza un registro de la bases de datos basado
@@ -92,104 +102,71 @@ class Evento
      */
 	 
     public static function update(
-        $id_evento,
+        $id_usuario,
         $nombre,
-        $edad_min,
-        $edad_max,
-        $cupo_min,
-        $cupo_max,
-		$costo,
-        $fecha,
-        $foto,
-        $ubicacion,
-        $latitud,
-        $longitud,
-        $id_categoria,
-        $desc_evento,
+        $apellido,
+        $email,
+        $fecha_nacimiento,
         $id_sexo,
-		$estado
+		$alias,
+		$foto
     )
     {
         // Creando consulta UPDATE
-        $consulta = "UPDATE evento" .
-            " SET nombre=?, edad_min=?, edad_max=?, cupo_min=?, cupo_max=?, costo=?, fecha=?, foto=?, ubicacion=?, latitud=?, longitud=?, id_categoria=?, desc_evento=?, id_sexo=?, estado=? " .
-            "WHERE id_evento=?";
+        $consulta = "UPDATE usuario" .
+            " SET nombre=?, apellido=?, email=?, fecha_nacimiento=?, id_sexo=?, alias=?, foto=?" .
+            "WHERE id_usuario=?";
 
         // Preparar la sentencia
         $cmd = Database::getInstance()->getDb()->prepare($consulta);
 
         // Relacionar y ejecutar la sentencia
-        $cmd->execute(array($nombre, $edad_min, $edad_max, $cupo_min, $cupo_max, $costo, $fecha, $foto, $ubicacion, $latitud, $longitud, $id_categoria, $desc_evento, $id_sexo, $estado, $id_evento));
+        $cmd->execute(array($nombre, $apellido, $email, $fecha_nacimiento, $id_sexo, $alias, $foto, $id_usuario));
 
         return $cmd;
     }
 
     /**
-     * Insertar una nueva evento
+     * Insertar un nuevo usuario
      *
      * @return PDOStatement
      */
     public static function insert(
-		$nombre,
-		$id_owner,
-        $edad_min,
-        $edad_max,
-        $cupo_min,
-        $cupo_max,
-		$costo,
-        $fecha,
-        $foto,
-        $ubicacion,
-        $latitud,
-        $longitud,
-        $id_categoria,
-        $desc_evento,
+        $id_usuario,
+        $nombre,
+        $apellido,
+        $email,
+        $fecha_nacimiento,
         $id_sexo,
-		$estado
+		$alias,
+		$foto
     )
     {
         // Sentencia INSERT
-        $comando = "INSERT INTO evento ( " .
-            "id_evento," .
+        $comando = "INSERT INTO usuario ( " .
+            "id_usuario," .
             " nombre," .
-            " id_owner," .
-            " edad_min," .
-            " edad_max," .
-            " cupo_min," .
-            " cupo_max," .
-            " costo," .
-            " fecha," .
-            " foto," .
-            " ubicacion," .
-            " latitud," .
-            " longitud," .
-            " id_categoria," .
-            " desc_evento," .
+            " apellido," .
+            " email," .
+            " fecha_nacimiento," .
             " id_sexo," .
-            " estado)" .
-            " VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            " alias," .
+            " foto)" .
+            " VALUES(?,?,?,?,?,?,?,?)";
 
         // Preparar la sentencia
         $sentencia = Database::getInstance()->getDb()->prepare($comando);
 
         return $sentencia->execute(
             array(
+				$id_usuario,
 				$nombre,
-				$id_owner,
-				$edad_min,
-				$edad_max,
-				$cupo_min,
-				$cupo_max,
-				$costo,
-				$fecha,
-				$foto,
-				$ubicacion,
-				$latitud,
-				$longitud,
-				$id_categoria,
-				$desc_evento,
+				$apellido,
+				$email,
+				$fecha_nacimiento,
 				$id_sexo,
-				$estado
+				$alias,
+				$foto
             )
         );
 
@@ -198,18 +175,18 @@ class Evento
     /**
      * Eliminar el registro con el identificador especificado
      *
-     * @param $id_evento identificador de el evento
+     * @param $id_usuario identificador de el usuario
      * @return bool Respuesta de la eliminación
      */
-    public static function delete($id_evento)
+    public static function delete($id_usuario)
     {
         // Sentencia DELETE
-        $comando = "DELETE FROM evento WHERE id_evento=?";
+        $comando = "DELETE FROM usuario WHERE id_usuario=?";
 
         // Preparar la sentencia
         $sentencia = Database::getInstance()->getDb()->prepare($comando);
 
-        return $sentencia->execute(array($id_evento));
+        return $sentencia->execute(array($id_usuario));
     }
 }
 
