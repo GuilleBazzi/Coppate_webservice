@@ -62,45 +62,6 @@ class Usuario
         }
     }
 	
-/*     public static function logUser(
-        $id_usuario,
-        $nombre,
-        $apellido,
-        $email,
-        $fecha_nacimiento,
-        $id_sexo,
-		$alias,
-		$foto
-    )
-    {
-        // Consulta de el usuario, si no existe lo crea en la base, si existe le hace un update.
-        $consulta = "SELECT * FROM usuario
-                             WHERE id_usuario = ?";
-
-        try {
-            // Preparar sentencia
-            $comando = Database::getInstance()->getDb()->prepare($consulta);
-            // Ejecutar sentencia preparada
-            $comando->execute(array($id_usuario));
-            // Capturar primera fila del resultado
-            $row = $comando->fetch(PDO::FETCH_ASSOC);
-            
-			return $row;
-
-        } catch (PDOException $e) {
-            // Aquí puedes clasificar el error dependiendo de la excepción
-            // para presentarlo en la respuesta Json
-            return -1;
-        }
-    } */
-
-	
-    /**
-     * Actualiza un registro de la bases de datos basado
-     * en los nuevos valores relacionados con un identificador
-     * el id_owner no se actualiza, ya que no cambia nunca.
-     */
-	 
     public static function update(
         $id_usuario,
         $nombre,

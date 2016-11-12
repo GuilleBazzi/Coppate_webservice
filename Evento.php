@@ -99,7 +99,9 @@ class Evento
         $cupo_min,
         $cupo_max,
 		$costo,
-        $fecha,
+        $fecha_inicio,
+        $fecha_fin,
+        $time_stamp,
         $foto,
         $ubicacion,
         $latitud,
@@ -112,14 +114,14 @@ class Evento
     {
         // Creando consulta UPDATE
         $consulta = "UPDATE evento" .
-            " SET nombre=?, edad_min=?, edad_max=?, cupo_min=?, cupo_max=?, costo=?, fecha=?, foto=?, ubicacion=?, latitud=?, longitud=?, id_categoria=?, desc_evento=?, id_sexo=?, estado=? " .
+            " SET nombre=?, edad_min=?, edad_max=?, cupo_min=?, cupo_max=?, costo=?, fecha_inicio=?, fecha_fin=?, time_stamp=NULL, foto=?, ubicacion=?, latitud=?, longitud=?, id_categoria=?, desc_evento=?, id_sexo=?, estado=? " .
             "WHERE id_evento=?";
 
         // Preparar la sentencia
         $cmd = Database::getInstance()->getDb()->prepare($consulta);
 
         // Relacionar y ejecutar la sentencia
-        $cmd->execute(array($nombre, $edad_min, $edad_max, $cupo_min, $cupo_max, $costo, $fecha, $foto, $ubicacion, $latitud, $longitud, $id_categoria, $desc_evento, $id_sexo, $estado, $id_evento));
+        $cmd->execute(array($nombre, $edad_min, $edad_max, $cupo_min, $cupo_max, $costo, $fecha_inicio, $fecha_fin, $time_stamp, $foto, $ubicacion, $latitud, $longitud, $id_categoria, $desc_evento, $id_sexo, $estado, $id_evento));
 
         return $cmd;
     }
@@ -137,7 +139,9 @@ class Evento
         $cupo_min,
         $cupo_max,
 		$costo,
-        $fecha,
+        $fecha_inicio,
+        $fecha_fin,
+        $time_stamp,
         $foto,
         $ubicacion,
         $latitud,
@@ -158,7 +162,9 @@ class Evento
             " cupo_min," .
             " cupo_max," .
             " costo," .
-            " fecha," .
+            " fecha_inicio," .
+            " fecha_fin," .
+            " time_stamp," .
             " foto," .
             " ubicacion," .
             " latitud," .
@@ -167,7 +173,7 @@ class Evento
             " desc_evento," .
             " id_sexo," .
             " estado)" .
-            " VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            " VALUES(NULL,?,?,?,?,?,?,?,?,?,NULL,?,?,?,?,?,?,?,?)";
 
         // Preparar la sentencia
         $sentencia = Database::getInstance()->getDb()->prepare($comando);
@@ -181,7 +187,9 @@ class Evento
 				$cupo_min,
 				$cupo_max,
 				$costo,
-				$fecha,
+				$fecha_inicio,
+				$fecha_fin,
+				$time_stamp,
 				$foto,
 				$ubicacion,
 				$latitud,
