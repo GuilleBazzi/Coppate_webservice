@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if ($retorno) {
 
             $evento["estado"] = "1";
-            $evento["evento"] = $retorno;
+            $evento["eventos"] = $retorno;
             // Enviar objeto json de la evento
             print json_encode($evento);
         } else {
